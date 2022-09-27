@@ -1,5 +1,6 @@
 package com.jwt.backend.domain.member.entity;
 
+import com.jwt.backend.domain.Todo.entity.Todo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
 *
@@ -51,6 +53,9 @@ public class Member implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @OneToMany(mappedBy = "member")
+    private final List<Todo> todoList = new ArrayList<>();
+
     public void addUserAuthority() {
         this.role = Role.ROLE_USER;
     }
@@ -59,6 +64,12 @@ public class Member implements UserDetails {
         this.password = passwordEncoder.encode(password);
     }
 
+    public void addTodo(Todo todo) {
+        this.todoList.add(todo);
+        if (todo.getMember() != null) {
+            todo.setMember(this);
+        }
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         ArrayList<GrantedAuthority> auth = new ArrayList<>();

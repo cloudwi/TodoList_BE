@@ -1,5 +1,6 @@
 package com.jwt.backend.domain.Todo.entity;
 
+import com.jwt.backend.domain.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,6 +23,18 @@ public class Todo {
     @Column(name = "todo_id")
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     @Column(nullable = false)
     private String content;
+
+    public void setMember(Member member) {
+        if (this.member != null) {
+            this.member.getTodoList().remove(this);
+        }
+        this.member = member;
+        member.getTodoList().add(this);
+    }
 }
