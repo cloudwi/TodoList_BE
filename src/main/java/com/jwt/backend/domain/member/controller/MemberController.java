@@ -1,5 +1,6 @@
 package com.jwt.backend.domain.member.controller;
 
+import com.jwt.backend.domain.member.dto.request.MemberLoginRequestDto;
 import com.jwt.backend.domain.member.dto.request.MemberSignUpRequestDto;
 import com.jwt.backend.domain.member.dto.response.MemberLoginResponseDto;
 import com.jwt.backend.domain.member.dto.response.MemberSignUpResponseDto;
@@ -25,7 +26,7 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid MemberLoginResponseDto memberLoginResponseDto) {
-        return memberService.login(memberLoginResponseDto);
+    public ResponseEntity<MemberLoginResponseDto> login(@RequestBody @Valid MemberLoginRequestDto memberLoginRequestDto) {
+        return memberService.login(memberLoginRequestDto);
     }
 }

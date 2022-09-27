@@ -1,11 +1,13 @@
 package com.jwt.backend.domain.member.dto.response;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 @Getter
+@Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MemberLoginResponseDto {
-    private String email;
-    private String password;
+    private String nickname;
+    private String token;
 }

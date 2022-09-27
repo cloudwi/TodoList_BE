@@ -1,5 +1,6 @@
 package com.jwt.backend.domain.member.service.Impl;
 
+import com.jwt.backend.domain.member.dto.request.MemberLoginRequestDto;
 import com.jwt.backend.domain.member.entity.Member;
 import com.jwt.backend.domain.member.dto.request.MemberSignUpRequestDto;
 import com.jwt.backend.domain.member.dto.response.MemberLoginResponseDto;
@@ -55,14 +56,19 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public ResponseEntity<String> login(MemberLoginResponseDto memberLoginResponseDto) {
-        Member member = memberRepository.findByEmail(memberLoginResponseDto.getEmail())
+    public ResponseEntity<MemberLoginResponseDto> login(MemberLoginRequestDto memberLoginRequestDto) {
+        Member member = memberRepository.findByEmail(memberLoginRequestDto.getEmail())
                 .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_SIGNUP_EMAIL));
-        validateMatchedPassword(memberLoginResponseDto.getPassword(), member.getPassword());
+        validateMatchedPassword(memberLoginRequestDto.getPassword(), member.getPassword());
 
         String accessToken = jwtTokenProvider.createAccessToken(member.getUsername(), member.getRole().name());
 
-        return ResponseEntity.ok(accessToken);
+        MemberLoginResponseDto memberLoginResponseDto = new MemberLoginResponseDto().builder()
+                .nickname(member.getNickname())
+                .token(accessToken)
+                .build();
+
+        return ResponseEntity.ok(memberLoginResponseDto);
     }
 
     private void validateMatchedPassword(String validPassword, String memberPassword) {
