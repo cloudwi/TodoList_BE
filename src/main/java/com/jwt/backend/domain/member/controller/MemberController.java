@@ -17,7 +17,6 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping("/member")
 public class MemberController {
-
     private final MemberService memberService;
 
     @PostMapping()
