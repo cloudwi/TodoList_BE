@@ -43,6 +43,9 @@ public class Member implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private String nickname;
+
     private String refreshToken;
 
     @Enumerated(EnumType.STRING)

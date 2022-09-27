@@ -43,12 +43,14 @@ public class MemberServiceImpl implements MemberService {
         }
 
         Member member = memberRepository.save(memberSignUpRequestDto.toEntity());
+
         member.addUserAuthority();
         member.encodePassword(passwordEncoder);
 
         MemberSignUpResponseDto memberSignUpResponseDto = MemberSignUpResponseDto.builder()
                 .id(member.getId())
                 .build();
+
         return ResponseEntity.created(null).body(memberSignUpResponseDto);
     }
 

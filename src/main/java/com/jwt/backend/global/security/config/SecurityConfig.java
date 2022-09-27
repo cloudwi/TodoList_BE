@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,6 +46,28 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring()
+                //.antMatchers(HttpMethod.GET ,"/**")
+                .antMatchers(HttpMethod.GET, "/api/projects/**")
+                .antMatchers(HttpMethod.GET, "/api/files/**")
+                .antMatchers(HttpMethod.GET, "/api/stack/**")
+                .antMatchers(HttpMethod.GET, "/api/comments/**")
+                .antMatchers(HttpMethod.POST, "/api/members")
+                .antMatchers("/css/**")
+                .antMatchers("/static/**")
+                .antMatchers("/js/**")
+                .antMatchers("/img/**")
+                .antMatchers("/fonts/**")
+                .antMatchers("/vendor/**")
+                .antMatchers("/favicon.ico")
+                .antMatchers("/pages/**")
+                .antMatchers("/h2-console/**")
+                .antMatchers("/swagger-ui/**")
+                .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**");
     }
 
     public CorsConfigurationSource corsConfigurationSource() {
