@@ -1,4 +1,4 @@
-package com.jwt.backend.domain.member;
+package com.jwt.backend.domain.member.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

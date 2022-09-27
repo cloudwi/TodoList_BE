@@ -1,6 +1,6 @@
 package com.jwt.backend.domain.member.service.Impl;
 
-import com.jwt.backend.domain.member.Member;
+import com.jwt.backend.domain.member.entity.Member;
 import com.jwt.backend.domain.member.dto.request.MemberSignUpRequestDto;
 import com.jwt.backend.domain.member.dto.response.MemberLoginResponseDto;
 import com.jwt.backend.domain.member.dto.response.MemberSignUpResponseDto;

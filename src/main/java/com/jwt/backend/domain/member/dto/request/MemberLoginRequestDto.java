@@ -1,6 +1,6 @@
 package com.jwt.backend.domain.member.dto.request;
 
-import com.jwt.backend.domain.member.Member;
+import com.jwt.backend.domain.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
