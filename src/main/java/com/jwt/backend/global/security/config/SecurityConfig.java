@@ -51,7 +51,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         // 허용할 origin (fe 로컬용 호스트, 리얼용 호스트)
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedOrigins(Arrays.asList("*"));
 
         // 허용할 HTTP Method 종류
         configuration.setAllowedHeaders(Arrays.asList("GET", "POST", "PUT", "DELETE"));
