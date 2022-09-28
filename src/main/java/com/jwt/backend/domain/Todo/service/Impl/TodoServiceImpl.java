@@ -70,6 +70,13 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public ResponseEntity<TodoListResponseDto> findTodoList(Pageable pageable, Member principal) {
+        Member member = memberRepository.findById(principal.getId())
+                .orElseThrow(()->{
+                    throw new MemberException(MemberExceptionType.NOT_SIGNUP_EMAIL);
+                });
+
+        List<Todo> todoList = member.getTodoList();
+
 
         return null;
     }
