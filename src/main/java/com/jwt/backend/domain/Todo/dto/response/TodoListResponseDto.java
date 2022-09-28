@@ -1,8 +1,6 @@
 package com.jwt.backend.domain.Todo.dto.response;
 
-import com.jwt.backend.domain.Todo.entity.Todo;
 import lombok.*;
-import org.springframework.data.domain.Page;
 
 @Builder
 @Getter
@@ -10,5 +8,6 @@ import org.springframework.data.domain.Page;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TodoListResponseDto {
-    private Page<Todo> todoPage;
+    private Long id;
+    private String content;
 }

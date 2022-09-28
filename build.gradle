@@ -4,12 +4,6 @@ plugins {
     id 'java'
 }
 
-buildscript {
-    ext {
-        queryDslVersion = "5.0.0"
-    }
-}
-
 group = 'com.JWT'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'

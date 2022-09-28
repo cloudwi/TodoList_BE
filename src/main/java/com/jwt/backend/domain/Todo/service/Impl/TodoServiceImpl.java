@@ -70,23 +70,8 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public ResponseEntity<TodoListResponseDto> findTodoList(Pageable pageable, Member principal) {
+
         return null;
     }
 
-//    @Override
-//    public ResponseEntity<TodoListResponseDto> findTodoList(Pageable pageable, Member principal) {
-//
-//        Member member = memberRepository.findById(principal.getId())
-//                .orElseThrow(() ->{
-//            throw new MemberException(MemberExceptionType.NOT_SIGNUP_EMAIL);
-//        });
-//
-//        Page<Todo> todoPage = todoRepository.findAllByMemberId(member.getId());
-//
-//        TodoListResponseDto todoListResponseDto = new TodoListResponseDto().builder()
-//                .todoPage(todoPage).build();
-//
-//        return ResponseEntity
-//                .ok(todoListResponseDto);
-//    }
 }
