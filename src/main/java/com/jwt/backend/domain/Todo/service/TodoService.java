@@ -9,11 +9,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface TodoService {
     ResponseEntity<TodoCreateResponseDto> create(TodoCreateRequestDto todoCreateRequestDto, Member principal);
 
-    ResponseEntity<TodoListResponseDto> findTodoList(Pageable pageable, Member principal);
+    ResponseEntity<List<TodoListResponseDto>> findTodoList(Pageable pageable, Member principal);
 
     default TodoListResponseDto entityToDto(Todo todo) {
         TodoListResponseDto dto = TodoListResponseDto.builder()

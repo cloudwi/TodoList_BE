@@ -1,7 +1,6 @@
 package com.jwt.backend.domain.Todo.service.Impl;
 
 import com.jwt.backend.domain.Todo.dto.request.TodoCreateRequestDto;
-import com.jwt.backend.domain.Todo.dto.request.TodoListRequestDto;
 import com.jwt.backend.domain.Todo.dto.response.TodoCreateResponseDto;
 import com.jwt.backend.domain.Todo.dto.response.TodoListResponseDto;
 import com.jwt.backend.domain.Todo.entity.Todo;
@@ -11,22 +10,15 @@ import com.jwt.backend.domain.member.entity.Member;
 import com.jwt.backend.domain.member.exception.MemberException;
 import com.jwt.backend.domain.member.exception.MemberExceptionType;
 import com.jwt.backend.domain.member.repository.MemberRepository;
-import com.jwt.backend.global.dto.request.PageRequestDto;
-import com.jwt.backend.global.dto.response.PageResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 /**
 *
@@ -69,16 +61,21 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public ResponseEntity<TodoListResponseDto> findTodoList(Pageable pageable, Member principal) {
+    public ResponseEntity<List<TodoListResponseDto>> findTodoList(Pageable pageable, Member principal) {
         Member member = memberRepository.findById(principal.getId())
                 .orElseThrow(()->{
                     throw new MemberException(MemberExceptionType.NOT_SIGNUP_EMAIL);
                 });
 
-        List<Todo> todoList = member.getTodoList();
+        List<Todo> findTodoList = member.getTodoList();
 
+        List<TodoListResponseDto> TodoList = new ArrayList<>();
 
-        return null;
+        findTodoList.forEach(todo -> {
+            TodoList.add(todo.EntityToDto());
+        });
+
+        return ResponseEntity.ok(TodoList);
     }
 
 }
