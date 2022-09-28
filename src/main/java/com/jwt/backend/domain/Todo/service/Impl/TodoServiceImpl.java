@@ -1,9 +1,12 @@
 package com.jwt.backend.domain.Todo.service.Impl;
 
 import com.jwt.backend.domain.Todo.dto.request.TodoCreateRequestDto;
+import com.jwt.backend.domain.Todo.dto.request.TodoDeleteRequestDto;
 import com.jwt.backend.domain.Todo.dto.response.TodoCreateResponseDto;
 import com.jwt.backend.domain.Todo.dto.response.TodoListResponseDto;
 import com.jwt.backend.domain.Todo.entity.Todo;
+import com.jwt.backend.domain.Todo.exception.TodoException;
+import com.jwt.backend.domain.Todo.exception.TodoExceptionType;
 import com.jwt.backend.domain.Todo.repository.TodoRepository;
 import com.jwt.backend.domain.Todo.service.TodoService;
 import com.jwt.backend.domain.member.entity.Member;
@@ -61,7 +64,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public ResponseEntity<List<TodoListResponseDto>> findTodoList(Pageable pageable, Member principal) {
+    public ResponseEntity<List<TodoListResponseDto>> findList(Pageable pageable, Member principal) {
         Member member = memberRepository.findById(principal.getId())
                 .orElseThrow(()->{
                     throw new MemberException(MemberExceptionType.NOT_SIGNUP_EMAIL);
@@ -78,4 +81,20 @@ public class TodoServiceImpl implements TodoService {
         return ResponseEntity.ok(TodoList);
     }
 
+    @Override
+    public ResponseEntity<Long> delete(TodoDeleteRequestDto todoDeleteRequestDto, Member principal) {
+
+        Todo todo = todoRepository.findById(todoDeleteRequestDto.getId())
+                .orElseThrow(()-> {
+                    throw new TodoException(TodoExceptionType.NOT_FOUND_TODO);
+                });
+
+        if (todo.getMember().getId() == principal.getId()) {
+            todoRepository.deleteById(todoDeleteRequestDto.getId());
+        } else {
+            throw new TodoException(TodoExceptionType.NOT_MATCHING_TODO);
+        }
+
+        return ResponseEntity.ok(null);
+    }
 }

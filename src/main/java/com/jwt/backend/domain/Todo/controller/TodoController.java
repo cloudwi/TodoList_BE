@@ -1,6 +1,7 @@
 package com.jwt.backend.domain.Todo.controller;
 
 import com.jwt.backend.domain.Todo.dto.request.TodoCreateRequestDto;
+import com.jwt.backend.domain.Todo.dto.request.TodoDeleteRequestDto;
 import com.jwt.backend.domain.Todo.dto.response.TodoCreateResponseDto;
 import com.jwt.backend.domain.Todo.dto.response.TodoListResponseDto;
 import com.jwt.backend.domain.Todo.entity.Todo;
@@ -36,9 +37,14 @@ public class TodoController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<TodoListResponseDto>> fondTodoList(@PageableDefault(sort = "id", direction = Sort.Direction.DESC)
+    public ResponseEntity<List<TodoListResponseDto>> findList(@PageableDefault(sort = "id", direction = Sort.Direction.DESC)
                                                        Pageable pageable, Authentication authentication) {
 
-        return todoService.findTodoList(pageable, (Member) authentication.getPrincipal());
+        return todoService.findList(pageable, (Member) authentication.getPrincipal());
+    }
+
+    @DeleteMapping()
+    public ResponseEntity<Long> delete(@RequestBody TodoDeleteRequestDto todoDeleteRequestDto, Authentication authentication) {
+        return todoService.delete(todoDeleteRequestDto, (Member) authentication.getPrincipal());
     }
 }

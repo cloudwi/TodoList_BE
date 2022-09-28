@@ -1,6 +1,7 @@
 package com.jwt.backend.domain.Todo.service;
 
 import com.jwt.backend.domain.Todo.dto.request.TodoCreateRequestDto;
+import com.jwt.backend.domain.Todo.dto.request.TodoDeleteRequestDto;
 import com.jwt.backend.domain.Todo.dto.response.TodoCreateResponseDto;
 import com.jwt.backend.domain.Todo.dto.response.TodoListResponseDto;
 import com.jwt.backend.domain.Todo.entity.Todo;
@@ -15,7 +16,7 @@ import java.util.List;
 public interface TodoService {
     ResponseEntity<TodoCreateResponseDto> create(TodoCreateRequestDto todoCreateRequestDto, Member principal);
 
-    ResponseEntity<List<TodoListResponseDto>> findTodoList(Pageable pageable, Member principal);
+    ResponseEntity<List<TodoListResponseDto>> findList(Pageable pageable, Member principal);
 
     default TodoListResponseDto entityToDto(Todo todo) {
         TodoListResponseDto dto = TodoListResponseDto.builder()
@@ -25,4 +26,6 @@ public interface TodoService {
 
         return dto;
     }
+
+    ResponseEntity<Long> delete(TodoDeleteRequestDto todoDeleteRequestDto, Member principal);
 }
