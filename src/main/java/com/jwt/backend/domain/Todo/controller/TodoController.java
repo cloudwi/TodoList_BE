@@ -2,20 +2,15 @@ package com.jwt.backend.domain.Todo.controller;
 
 import com.jwt.backend.domain.Todo.dto.request.TodoCreateRequestDto;
 import com.jwt.backend.domain.Todo.dto.request.TodoDeleteRequestDto;
+import com.jwt.backend.domain.Todo.dto.request.TodoCompletionRequestDto;
 import com.jwt.backend.domain.Todo.dto.response.TodoCreateResponseDto;
 import com.jwt.backend.domain.Todo.dto.response.TodoListResponseDto;
-import com.jwt.backend.domain.Todo.entity.Todo;
 import com.jwt.backend.domain.Todo.service.TodoService;
 import com.jwt.backend.domain.member.entity.Member;
-import com.jwt.backend.global.dto.request.PageRequestDto;
-import com.jwt.backend.global.dto.response.PageResponseDto;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -37,14 +32,22 @@ public class TodoController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<TodoListResponseDto>> findList(@PageableDefault(sort = "id", direction = Sort.Direction.DESC)
+    public ResponseEntity<List<TodoListResponseDto>> findList(@PageableDefault(sort = "id",
+            direction = Sort.Direction.DESC)
                                                        Pageable pageable, Authentication authentication) {
 
         return todoService.findList(pageable, (Member) authentication.getPrincipal());
     }
 
     @DeleteMapping()
-    public ResponseEntity<Long> delete(@RequestBody TodoDeleteRequestDto todoDeleteRequestDto, Authentication authentication) {
+    public ResponseEntity<Long> delete(@RequestBody TodoDeleteRequestDto todoDeleteRequestDto,
+                                       Authentication authentication) {
         return todoService.delete(todoDeleteRequestDto, (Member) authentication.getPrincipal());
+    }
+
+    @PutMapping()
+    public ResponseEntity<Long> completion(@RequestBody TodoCompletionRequestDto todoCompletionRequestDto,
+                                           Authentication authentication) {
+        return todoService.completion(todoCompletionRequestDto, (Member) authentication.getPrincipal());
     }
 }

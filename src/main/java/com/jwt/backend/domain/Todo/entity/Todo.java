@@ -31,6 +31,13 @@ public class Todo {
     @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false)
+    private boolean checkTodo = false;
+
+    public void Completion() {
+        this.checkTodo = true;
+    }
+
     public void setMember(Member member) {
         if (this.member != null) {
             this.member.getTodoList().remove(this);
@@ -43,6 +50,7 @@ public class Todo {
         TodoListResponseDto todoListResponseDto = new TodoListResponseDto().builder()
                 .id(this.id)
                 .content(this.content)
+                .checkTodo(this.checkTodo)
                 .build();
 
         return todoListResponseDto;

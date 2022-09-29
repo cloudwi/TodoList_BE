@@ -10,4 +10,5 @@ import lombok.*;
 public class TodoListResponseDto {
     private Long id;
     private String content;
+    private boolean checkTodo;
 }

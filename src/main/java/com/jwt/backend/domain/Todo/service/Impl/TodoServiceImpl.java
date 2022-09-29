@@ -1,5 +1,6 @@
 package com.jwt.backend.domain.Todo.service.Impl;
 
+import com.jwt.backend.domain.Todo.dto.request.TodoCompletionRequestDto;
 import com.jwt.backend.domain.Todo.dto.request.TodoCreateRequestDto;
 import com.jwt.backend.domain.Todo.dto.request.TodoDeleteRequestDto;
 import com.jwt.backend.domain.Todo.dto.response.TodoCreateResponseDto;
@@ -100,6 +101,28 @@ public class TodoServiceImpl implements TodoService {
 
         todoRepository.delete(todo);
         log.info("delete todo");
+
+        return ResponseEntity.ok(todo.getId());
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<Long> completion(TodoCompletionRequestDto todoCompletionRequestDto, Member principal) {
+
+        Todo todo = todoRepository.findById(todoCompletionRequestDto.getId())
+                .orElseThrow(()-> {
+                    throw new TodoException(TodoExceptionType.NOT_FOUND_TODO);
+                });
+
+        Member member = memberRepository.findById(principal.getId())
+                .orElseThrow(()->{
+                    throw new MemberException(MemberExceptionType.NOT_SIGNUP_EMAIL);
+                });
+
+        if (todo.getMember().getId() != member.getId())
+            throw new TodoException(TodoExceptionType.NOT_MATCHING_TODO);
+
+        todo.Completion();
 
         return ResponseEntity.ok(todo.getId());
     }
