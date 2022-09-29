@@ -53,7 +53,7 @@ public class Member implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private final List<Todo> todoList = new ArrayList<>();
 
     public void addUserAuthority() {
