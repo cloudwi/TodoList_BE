@@ -82,6 +82,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<Long> delete(TodoDeleteRequestDto todoDeleteRequestDto, Member principal) {
 
         Todo todo = todoRepository.findById(todoDeleteRequestDto.getId())
@@ -89,12 +90,17 @@ public class TodoServiceImpl implements TodoService {
                     throw new TodoException(TodoExceptionType.NOT_FOUND_TODO);
                 });
 
-        if (todo.getMember().getId() == principal.getId()) {
-            todoRepository.deleteById(todoDeleteRequestDto.getId());
-        } else {
-            throw new TodoException(TodoExceptionType.NOT_MATCHING_TODO);
-        }
+        Member member = memberRepository.findById(principal.getId())
+                .orElseThrow(()->{
+                    throw new MemberException(MemberExceptionType.NOT_SIGNUP_EMAIL);
+                });;
 
-        return ResponseEntity.ok(null);
+        if (todo.getMember().getId() != member.getId())
+            throw new TodoException(TodoExceptionType.NOT_MATCHING_TODO);
+
+        todoRepository.delete(todo);
+        log.info("delete todo");
+
+        return ResponseEntity.ok(todo.getId());
     }
 }
