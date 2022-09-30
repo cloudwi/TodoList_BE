@@ -25,6 +25,7 @@ public class NoteServiceImpl implements NoteService {
     private final MemberRepository memberRepository;
 
     @Override
+    @Transactional
     public ResponseEntity<NoteCreateResponseDto> create(NoteCreateReqestDto noteCreateReqestDto, Member principal) {
         Note note = noteCreateReqestDto.toEntity();
         Member member = memberRepository.findById(principal.getId())
