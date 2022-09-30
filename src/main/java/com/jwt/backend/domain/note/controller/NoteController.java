@@ -16,7 +16,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("note")
+@RequestMapping("/note")
 public class NoteController {
 
     private final NoteService noteService;
