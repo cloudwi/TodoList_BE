@@ -107,7 +107,7 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     @Transactional
-    public ResponseEntity<Long> completion(TodoCompletionRequestDto todoCompletionRequestDto, Member principal) {
+    public ResponseEntity<Long> check(TodoCompletionRequestDto todoCompletionRequestDto, Member principal) {
 
         Todo todo = todoRepository.findById(todoCompletionRequestDto.getId())
                 .orElseThrow(()-> {
@@ -122,7 +122,7 @@ public class TodoServiceImpl implements TodoService {
         if (todo.getMember().getId() != member.getId())
             throw new TodoException(TodoExceptionType.NOT_MATCHING_TODO);
 
-        todo.Completion();
+        todo.Check();
 
         return ResponseEntity.ok(todo.getId());
     }

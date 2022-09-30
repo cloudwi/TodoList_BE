@@ -48,6 +48,6 @@ public class TodoController {
     @PutMapping()
     public ResponseEntity<Long> completion(@RequestBody TodoCompletionRequestDto todoCompletionRequestDto,
                                            Authentication authentication) {
-        return todoService.completion(todoCompletionRequestDto, (Member) authentication.getPrincipal());
+        return todoService.check(todoCompletionRequestDto, (Member) authentication.getPrincipal());
     }
 }

@@ -34,8 +34,8 @@ public class Todo {
     @Column(nullable = false)
     private boolean checkTodo = false;
 
-    public void Completion() {
-        this.checkTodo = true;
+    public void Check() {
+        this.checkTodo = !this.checkTodo;
     }
 
     public void setMember(Member member) {
