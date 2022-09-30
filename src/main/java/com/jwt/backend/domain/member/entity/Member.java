@@ -1,6 +1,7 @@
 package com.jwt.backend.domain.member.entity;
 
 import com.jwt.backend.domain.Todo.entity.Todo;
+import com.jwt.backend.domain.note.entity.Note;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -54,7 +55,10 @@ public class Member implements UserDetails {
     private Role role;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private final List<Todo> todoList = new ArrayList<>();
+    private List<Todo> todoList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Note> noteList = new ArrayList<>();
 
     public void addUserAuthority() {
         this.role = Role.ROLE_USER;
@@ -70,6 +74,14 @@ public class Member implements UserDetails {
             todo.setMember(this);
         }
     }
+
+    public void addNote(Note note) {
+        this.noteList.add(note);
+        if (note.getMember() != null) {
+            note.setMember(this);
+        }
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         ArrayList<GrantedAuthority> auth = new ArrayList<>();

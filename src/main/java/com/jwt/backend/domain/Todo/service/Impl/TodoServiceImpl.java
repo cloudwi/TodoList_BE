@@ -21,8 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
 *
@@ -41,6 +40,7 @@ public class TodoServiceImpl implements TodoService {
 
     private final TodoRepository todoRepository;
     private final MemberRepository memberRepository;
+    private Comparator<? super TodoListResponseDto> TodoListComparator;
 
     @Override
     @Transactional
@@ -127,3 +127,4 @@ public class TodoServiceImpl implements TodoService {
         return ResponseEntity.ok(todo.getId());
     }
 }
+
