@@ -36,7 +36,7 @@ public class Note extends BaseTimeEntity {
     private String content;
 
     @Column(nullable = false)
-    private String importance = "#000000";
+    private String importance;
 
     public void setMember(Member member) {
         if (this.member != null) {
