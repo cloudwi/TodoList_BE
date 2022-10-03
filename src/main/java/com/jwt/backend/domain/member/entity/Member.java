@@ -1,6 +1,6 @@
 package com.jwt.backend.domain.member.entity;
 
-import com.jwt.backend.domain.Todo.entity.Todo;
+import com.jwt.backend.domain.todo.entity.Todo;
 import com.jwt.backend.domain.note.entity.Note;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

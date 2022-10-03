@@ -1,6 +1,6 @@
-package com.jwt.backend.domain.Todo.dto.request;
+package com.jwt.backend.domain.todo.dto.request;
 
-import com.jwt.backend.domain.Todo.entity.Todo;
+import com.jwt.backend.domain.todo.entity.Todo;
 import lombok.Data;
 
 @Data

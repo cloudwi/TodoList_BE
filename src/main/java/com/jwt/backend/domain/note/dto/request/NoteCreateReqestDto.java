@@ -1,6 +1,5 @@
 package com.jwt.backend.domain.note.dto.request;
 
-import com.jwt.backend.domain.Todo.entity.Todo;
 import com.jwt.backend.domain.note.entity.Note;
 import lombok.*;
 

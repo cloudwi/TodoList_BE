@@ -1,9 +1,10 @@
 package com.jwt.backend.domain.note.controller;
 
-import com.jwt.backend.domain.Todo.dto.response.TodoListResponseDto;
 import com.jwt.backend.domain.member.entity.Member;
 import com.jwt.backend.domain.note.dto.request.NoteCreateReqestDto;
+import com.jwt.backend.domain.note.dto.request.NoteDetailRequestDto;
 import com.jwt.backend.domain.note.dto.response.NoteCreateResponseDto;
+import com.jwt.backend.domain.note.dto.response.NoteDetailResponseDto;
 import com.jwt.backend.domain.note.dto.response.NoteListResponseDto;
 import com.jwt.backend.domain.note.service.NoteService;
 import lombok.RequiredArgsConstructor;
@@ -30,11 +31,14 @@ public class NoteController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<NoteListResponseDto>> findList(@PageableDefault(sort = "id",
+    public ResponseEntity<List<NoteListResponseDto>> findList(@PageableDefault(value = 9, sort = "id",
             direction = Sort.Direction.DESC) Pageable pageable, Authentication authentication) {
         return noteService.findList(pageable, (Member) authentication.getPrincipal());
     }
 
-//    @GetMapping("/detail")
+    @GetMapping("/detail")
+    public ResponseEntity<NoteDetailResponseDto> detail(@RequestBody NoteDetailRequestDto noteDetailRequestDto, Authentication authentication) {
+        return noteService.detail(noteDetailRequestDto, (Member) authentication.getPrincipal());
+    }
 
 }

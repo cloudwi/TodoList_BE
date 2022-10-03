@@ -8,10 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -48,13 +46,13 @@ public class Note extends BaseTimeEntity {
         member.getNoteList().add(this);
     }
 
-    public NoteListResponseDto EmtotyToDto(LocalDateTime modifiedDate) {
+    public NoteListResponseDto EmtotyToNoteListResponseDto() {
         NoteListResponseDto noteListResponseDto = new NoteListResponseDto().builder()
                 .id(this.id)
                 .title(this.title)
                 .content(this.content)
                 .importance(this.importance)
-                .modifiedDate(modifiedDate.toString())
+                .modifiedDate(this.getModifiedDate())
                 .build();
         return noteListResponseDto;
     }

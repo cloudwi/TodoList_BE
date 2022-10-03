@@ -1,14 +1,13 @@
-package com.jwt.backend.domain.Todo.service;
+package com.jwt.backend.domain.todo.service;
 
-import com.jwt.backend.domain.Todo.dto.request.TodoCreateRequestDto;
-import com.jwt.backend.domain.Todo.dto.request.TodoDeleteRequestDto;
-import com.jwt.backend.domain.Todo.dto.request.TodoCompletionRequestDto;
-import com.jwt.backend.domain.Todo.dto.response.TodoCreateResponseDto;
-import com.jwt.backend.domain.Todo.dto.response.TodoListResponseDto;
+import com.jwt.backend.domain.todo.dto.request.TodoCreateRequestDto;
+import com.jwt.backend.domain.todo.dto.request.TodoDeleteRequestDto;
+import com.jwt.backend.domain.todo.dto.request.TodoCompletionRequestDto;
+import com.jwt.backend.domain.todo.dto.response.TodoCreateResponseDto;
+import com.jwt.backend.domain.todo.dto.response.TodoListResponseDto;
 import com.jwt.backend.domain.member.entity.Member;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

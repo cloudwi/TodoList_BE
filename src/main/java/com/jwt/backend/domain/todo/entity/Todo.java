@@ -1,6 +1,6 @@
-package com.jwt.backend.domain.Todo.entity;
+package com.jwt.backend.domain.todo.entity;
 
-import com.jwt.backend.domain.Todo.dto.response.TodoListResponseDto;
+import com.jwt.backend.domain.todo.dto.response.TodoListResponseDto;
 import com.jwt.backend.domain.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,14 +46,8 @@ public class Todo {
         member.getTodoList().add(this);
     }
 
-    public TodoListResponseDto EntityToDto() {
-        TodoListResponseDto todoListResponseDto = new TodoListResponseDto().builder()
-                .id(this.id)
-                .content(this.content)
-                .checkTodo(this.checkTodo)
-                .build();
-
-        return todoListResponseDto;
+    public boolean getCheckTodo() {
+        return this.checkTodo;
     }
 
 

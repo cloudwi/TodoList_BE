@@ -1,4 +1,4 @@
-package com.jwt.backend.domain.Todo.exception;
+package com.jwt.backend.domain.todo.exception;
 
 import com.jwt.backend.global.exception.BaseExceptionType;
 import lombok.AllArgsConstructor;

@@ -1,21 +1,22 @@
-package com.jwt.backend.domain.Todo.service.Impl;
+package com.jwt.backend.domain.todo.service.Impl;
 
-import com.jwt.backend.domain.Todo.dto.request.TodoCompletionRequestDto;
-import com.jwt.backend.domain.Todo.dto.request.TodoCreateRequestDto;
-import com.jwt.backend.domain.Todo.dto.request.TodoDeleteRequestDto;
-import com.jwt.backend.domain.Todo.dto.response.TodoCreateResponseDto;
-import com.jwt.backend.domain.Todo.dto.response.TodoListResponseDto;
-import com.jwt.backend.domain.Todo.entity.Todo;
-import com.jwt.backend.domain.Todo.exception.TodoException;
-import com.jwt.backend.domain.Todo.exception.TodoExceptionType;
-import com.jwt.backend.domain.Todo.repository.TodoRepository;
-import com.jwt.backend.domain.Todo.service.TodoService;
+import com.jwt.backend.domain.todo.dto.request.TodoCompletionRequestDto;
+import com.jwt.backend.domain.todo.dto.request.TodoCreateRequestDto;
+import com.jwt.backend.domain.todo.dto.request.TodoDeleteRequestDto;
+import com.jwt.backend.domain.todo.dto.response.TodoCreateResponseDto;
+import com.jwt.backend.domain.todo.dto.response.TodoListResponseDto;
+import com.jwt.backend.domain.todo.entity.Todo;
+import com.jwt.backend.domain.todo.exception.TodoException;
+import com.jwt.backend.domain.todo.exception.TodoExceptionType;
+import com.jwt.backend.domain.todo.repository.TodoRepository;
+import com.jwt.backend.domain.todo.service.TodoService;
 import com.jwt.backend.domain.member.entity.Member;
 import com.jwt.backend.domain.member.exception.MemberException;
 import com.jwt.backend.domain.member.exception.MemberExceptionType;
 import com.jwt.backend.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ import java.util.*;
 *
 *   @author jangjuyeong
 *   @version 1.0.0
-*   작성일 2022/09/27
+*   작성일 2022/10/04
 **/
 
 @Service
@@ -40,7 +41,6 @@ public class TodoServiceImpl implements TodoService {
 
     private final TodoRepository todoRepository;
     private final MemberRepository memberRepository;
-    private Comparator<? super TodoListResponseDto> TodoListComparator;
 
     @Override
     @Transactional
@@ -54,6 +54,8 @@ public class TodoServiceImpl implements TodoService {
         todo.setMember(member);
 
         todoRepository.save(todo);
+
+        log.info("save todo ID : {} ",todo.getId());
 
         TodoCreateResponseDto todoCreateResponseDto = new TodoCreateResponseDto().builder()
                 .id(todo.getId())
@@ -71,13 +73,15 @@ public class TodoServiceImpl implements TodoService {
                     throw new MemberException(MemberExceptionType.NOT_SIGNUP_EMAIL);
                 });
 
-        List<Todo> findTodoList = member.getTodoList();
+        Page<Todo> todoPage = todoRepository.findByMemberId(pageable, member.getId());
 
         List<TodoListResponseDto> todoList = new ArrayList<>();
 
-        findTodoList.forEach(todo -> {
-            todoList.add(todo.EntityToDto());
+        todoPage.forEach(todo -> {
+            todoList.add(new TodoListResponseDto(todo));
         });
+
+        log.info("find todoList");
 
         return ResponseEntity.ok(todoList);
     }
@@ -86,45 +90,49 @@ public class TodoServiceImpl implements TodoService {
     @Transactional
     public ResponseEntity<Long> delete(TodoDeleteRequestDto todoDeleteRequestDto, Member principal) {
 
-        Todo todo = todoRepository.findById(todoDeleteRequestDto.getId())
-                .orElseThrow(()-> {
-                    throw new TodoException(TodoExceptionType.NOT_FOUND_TODO);
-                });
+        Todo findTodo = findTodo(todoDeleteRequestDto.getId());
 
-        Member member = memberRepository.findById(principal.getId())
+        Member findMember = memberRepository.findById(principal.getId())
                 .orElseThrow(()->{
                     throw new MemberException(MemberExceptionType.NOT_SIGNUP_EMAIL);
-                });;
+                });
 
-        if (todo.getMember().getId() != member.getId())
+        if (!findTodo.getMember().getId().equals(findMember.getId()))
             throw new TodoException(TodoExceptionType.NOT_MATCHING_TODO);
 
-        todoRepository.delete(todo);
-        log.info("delete todo");
+        todoRepository.delete(findTodo);
 
-        return ResponseEntity.ok(todo.getId());
+        log.info("delete todo ID : {}", findTodo.getId());
+
+        return ResponseEntity.ok(findTodo.getId());
     }
 
     @Override
     @Transactional
     public ResponseEntity<Long> check(TodoCompletionRequestDto todoCompletionRequestDto, Member principal) {
 
-        Todo todo = todoRepository.findById(todoCompletionRequestDto.getId())
-                .orElseThrow(()-> {
-                    throw new TodoException(TodoExceptionType.NOT_FOUND_TODO);
-                });
+        Todo findTodo = findTodo(todoCompletionRequestDto.getId());
 
-        Member member = memberRepository.findById(principal.getId())
+        Member findMember = memberRepository.findById(principal.getId())
                 .orElseThrow(()->{
                     throw new MemberException(MemberExceptionType.NOT_SIGNUP_EMAIL);
                 });
 
-        if (todo.getMember().getId() != member.getId())
+        if (!findTodo.getMember().getId().equals(findMember.getId()))
             throw new TodoException(TodoExceptionType.NOT_MATCHING_TODO);
 
-        todo.Check();
+        findTodo.Check();
 
-        return ResponseEntity.ok(todo.getId());
+        log.info("check todo ID : {}", findTodo.getId());
+
+        return ResponseEntity.ok(findTodo.getId());
+    }
+
+    private Todo findTodo(Long id) {
+        return todoRepository.findById(id)
+                .orElseThrow(()-> {
+                    throw new TodoException(TodoExceptionType.NOT_FOUND_TODO);
+                });
     }
 }
 

@@ -1,4 +1,4 @@
-package com.jwt.backend.domain.Todo.dto.response;
+package com.jwt.backend.domain.todo.dto.response;
 
 
 import lombok.*;

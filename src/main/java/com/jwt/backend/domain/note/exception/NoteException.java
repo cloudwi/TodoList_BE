@@ -1,4 +1,4 @@
-package com.jwt.backend.domain.Todo.exception;
+package com.jwt.backend.domain.note.exception;
 
 import com.jwt.backend.global.exception.BaseException;
 import com.jwt.backend.global.exception.BaseExceptionType;
@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class TodoException extends BaseException {
+public class NoteException extends BaseException {
 
     private BaseExceptionType exceptionType;
 

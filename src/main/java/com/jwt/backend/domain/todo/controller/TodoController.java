@@ -1,11 +1,11 @@
-package com.jwt.backend.domain.Todo.controller;
+package com.jwt.backend.domain.todo.controller;
 
-import com.jwt.backend.domain.Todo.dto.request.TodoCreateRequestDto;
-import com.jwt.backend.domain.Todo.dto.request.TodoDeleteRequestDto;
-import com.jwt.backend.domain.Todo.dto.request.TodoCompletionRequestDto;
-import com.jwt.backend.domain.Todo.dto.response.TodoCreateResponseDto;
-import com.jwt.backend.domain.Todo.dto.response.TodoListResponseDto;
-import com.jwt.backend.domain.Todo.service.TodoService;
+import com.jwt.backend.domain.todo.dto.request.TodoCreateRequestDto;
+import com.jwt.backend.domain.todo.dto.request.TodoDeleteRequestDto;
+import com.jwt.backend.domain.todo.dto.request.TodoCompletionRequestDto;
+import com.jwt.backend.domain.todo.dto.response.TodoCreateResponseDto;
+import com.jwt.backend.domain.todo.dto.response.TodoListResponseDto;
+import com.jwt.backend.domain.todo.service.TodoService;
 import com.jwt.backend.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -32,10 +32,8 @@ public class TodoController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<TodoListResponseDto>> findList(@PageableDefault(sort = "id",
-            direction = Sort.Direction.DESC)
-                                                       Pageable pageable, Authentication authentication) {
-
+    public ResponseEntity<List<TodoListResponseDto>> findList(@PageableDefault(value = 9, sort = "id",
+            direction = Sort.Direction.DESC) Pageable pageable, Authentication authentication) {
         return todoService.findList(pageable, (Member) authentication.getPrincipal());
     }
 

@@ -1,12 +1,12 @@
-package com.jwt.backend.domain.Todo.dto.request;
+package com.jwt.backend.domain.note.dto.request;
 
 import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class TodoDeleteRequestDto {
+public class NoteDetailRequestDto {
     private Long id;
 }

@@ -1,4 +1,4 @@
-package com.jwt.backend.domain.Todo.dto.request;
+package com.jwt.backend.domain.todo.dto.request;
 
 import lombok.*;
 
@@ -7,6 +7,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TodoCompletionRequestDto {
+public class TodoDeleteRequestDto {
     private Long id;
 }
