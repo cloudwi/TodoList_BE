@@ -1,5 +1,6 @@
 package com.jwt.backend.domain.note.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 @Getter
@@ -12,4 +13,5 @@ public class NoteListResponseDto {
     private String title;
     private String content;
     private String importance;
+    private String modifiedDate;
 }

@@ -62,7 +62,7 @@ public class NoteServiceImpl implements NoteService {
         List<NoteListResponseDto> noteList = new ArrayList<>();
 
         findNoteList.forEach(note -> {
-            noteList.add(note.EmtotyToDto());
+            noteList.add(note.EmtotyToDto(note.getModifiedDate()));
         });
 
         return ResponseEntity.ok(noteList);

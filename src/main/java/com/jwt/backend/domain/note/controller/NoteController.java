@@ -34,4 +34,7 @@ public class NoteController {
             direction = Sort.Direction.DESC) Pageable pageable, Authentication authentication) {
         return noteService.findList(pageable, (Member) authentication.getPrincipal());
     }
+
+//    @GetMapping("/detail")
+
 }
