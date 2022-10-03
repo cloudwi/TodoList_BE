@@ -73,13 +73,13 @@ public class TodoServiceImpl implements TodoService {
 
         List<Todo> findTodoList = member.getTodoList();
 
-        List<TodoListResponseDto> TodoList = new ArrayList<>();
+        List<TodoListResponseDto> todoList = new ArrayList<>();
 
         findTodoList.forEach(todo -> {
-            TodoList.add(todo.EntityToDto());
+            todoList.add(todo.EntityToDto());
         });
 
-        return ResponseEntity.ok(TodoList);
+        return ResponseEntity.ok(todoList);
     }
 
     @Override

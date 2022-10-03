@@ -1,6 +1,7 @@
 package com.jwt.backend.domain.note.entity;
 
 import com.jwt.backend.domain.member.entity.Member;
+import com.jwt.backend.domain.note.dto.response.NoteListResponseDto;
 import com.jwt.backend.global.entity.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,5 +45,15 @@ public class Note extends BaseTimeEntity {
         }
         this.member = member;
         member.getNoteList().add(this);
+    }
+
+    public NoteListResponseDto EmtotyToDto() {
+        NoteListResponseDto noteListResponseDto = new NoteListResponseDto().builder()
+                .id(this.id)
+                .title(this.title)
+                .content(this.content)
+                .importance(this.importance)
+                .build();
+        return noteListResponseDto;
     }
 }
