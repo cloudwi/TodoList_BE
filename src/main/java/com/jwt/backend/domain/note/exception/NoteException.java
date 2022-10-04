@@ -1,18 +1,18 @@
 package com.jwt.backend.domain.note.exception;
 
-import com.jwt.backend.global.exception.BaseException;
-import com.jwt.backend.global.exception.BaseExceptionType;
+import com.jwt.backend.global.exception.CoustomException;
+import com.jwt.backend.global.exception.CoustomExceptionType;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class NoteException extends BaseException {
+public class NoteException extends CoustomException {
 
-    private BaseExceptionType exceptionType;
+    private CoustomExceptionType exceptionType;
 
     @Override
-    public BaseExceptionType getExceptionType() {
+    public CoustomExceptionType getExceptionType() {
         return exceptionType;
     }
 }

@@ -1,6 +1,6 @@
 package com.jwt.backend.domain.member.exception;
 
-import com.jwt.backend.global.exception.BaseExceptionType;
+import com.jwt.backend.global.exception.CoustomExceptionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum MemberExceptionType implements BaseExceptionType {
+public enum MemberExceptionType implements CoustomExceptionType {
 
     ALREADY_EXIST_EMAIL(600, HttpStatus.OK, "이미 존재하는 이메일입니다."),
     NOT_SIGNUP_EMAIL(601, HttpStatus.OK, "가입되지 않은 이메일입니다."),

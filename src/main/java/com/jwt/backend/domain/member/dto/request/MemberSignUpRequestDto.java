@@ -16,12 +16,12 @@ import javax.validation.constraints.Pattern;
 @Builder
 public class MemberSignUpRequestDto {
 
-    @Email
-    @NotBlank(message = "이메일은 필수 입력 입니다.")
+    @Email(message = "올바른 이메일의 형식이 아닙니다.")
+    @NotBlank(message = "이메일은 필수 입력입니다.")
     private String email;
     @NotBlank(message = "비밀번호는 필수 입력입니다.")
     @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{6,20}",
-            message = "영문 대,소문자와 숫자, 특수기호가 적어도 1개 이상씩 포함된 6자 ~ 20자여야 합니다.")
+            message = "영문 대,소문자, 숫자, 특수기호가 적어도 1개 이상씩 포함된 6자 ~ 20자여야 합니다.")
     private String password;
 
     @NotBlank(message = "닉네임은 필수 입력입니다.")

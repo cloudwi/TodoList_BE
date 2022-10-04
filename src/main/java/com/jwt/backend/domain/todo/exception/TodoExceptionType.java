@@ -1,6 +1,6 @@
 package com.jwt.backend.domain.todo.exception;
 
-import com.jwt.backend.global.exception.BaseExceptionType;
+import com.jwt.backend.global.exception.CoustomExceptionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum TodoExceptionType implements BaseExceptionType {
+public enum TodoExceptionType implements CoustomExceptionType {
 
     NOT_MATCHING_TODO(605, HttpStatus.NOT_FOUND,"해당 게시물은 작성하지 않았습니다."),
     NOT_FOUND_TODO(606, HttpStatus.NOT_FOUND, "존재하지 않는 TODO입니다.");

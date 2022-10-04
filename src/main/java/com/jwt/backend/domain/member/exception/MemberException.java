@@ -1,18 +1,18 @@
 package com.jwt.backend.domain.member.exception;
 
-import com.jwt.backend.global.exception.BaseException;
-import com.jwt.backend.global.exception.BaseExceptionType;
+import com.jwt.backend.global.exception.CoustomException;
+import com.jwt.backend.global.exception.CoustomExceptionType;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class MemberException extends BaseException {
+public class MemberException extends CoustomException {
 
-    private BaseExceptionType exceptionType;
+    private CoustomExceptionType exceptionType;
 
     @Override
-    public BaseExceptionType getExceptionType() {
+    public CoustomExceptionType getExceptionType() {
         return exceptionType;
     }
 }

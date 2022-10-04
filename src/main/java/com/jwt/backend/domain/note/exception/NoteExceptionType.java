@@ -1,6 +1,6 @@
 package com.jwt.backend.domain.note.exception;
 
-import com.jwt.backend.global.exception.BaseExceptionType;
+import com.jwt.backend.global.exception.CoustomExceptionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -16,10 +16,10 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum NoteExceptionType implements BaseExceptionType {
+public enum NoteExceptionType implements CoustomExceptionType {
 
     NOT_FOUND_NOTE(607, HttpStatus.NOT_FOUND, "존재하지 않는 노트입니다."),
-    NOT_MATCHING_NOTE(608, HttpStatus.NOT_FOUND,"해당 노트는 다른 사람 노트입니다.");
+    NOT_MATCHING_NOTE(608, HttpStatus.NOT_FOUND,"해당 게시물의 작성자가 아닙니다.");
 
     private int errorCode;
     private HttpStatus httpStatus;

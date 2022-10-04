@@ -5,7 +5,8 @@ import com.jwt.backend.domain.member.exception.MemberException;
 import com.jwt.backend.domain.member.exception.MemberExceptionType;
 import com.jwt.backend.domain.member.repository.MemberRepository;
 import com.jwt.backend.domain.note.dto.request.NoteCreateReqestDto;
-import com.jwt.backend.domain.note.dto.request.NoteDetailRequestDto;
+import com.jwt.backend.domain.note.dto.request.NoteDeleteRequestDto;
+import com.jwt.backend.domain.note.dto.request.NoteUpdateRequestDto;
 import com.jwt.backend.domain.note.dto.response.NoteCreateResponseDto;
 import com.jwt.backend.domain.note.dto.response.NoteDetailResponseDto;
 import com.jwt.backend.domain.note.dto.response.NoteListResponseDto;
@@ -37,52 +38,102 @@ public class NoteServiceImpl implements NoteService {
     @Override
     @Transactional
     public ResponseEntity<NoteCreateResponseDto> create(NoteCreateReqestDto noteCreateReqestDto, Member principal) {
-        Note note = noteCreateReqestDto.toEntity();
-        Member member = memberRepository.findById(principal.getId())
-                .orElseThrow(()->{
-                    throw new MemberException(MemberExceptionType.NOT_SIGNUP_EMAIL);
-                });
 
-        note.setMember(member);
+        Note note = new Note(noteCreateReqestDto);
+
+        Member findMember = findMember(principal.getId());
+
+        note.setMember(findMember);
 
         noteRepository.save(note);
 
         NoteCreateResponseDto noteCreateResponseDto = new NoteCreateResponseDto(note);
+
+        log.info("create note ID : {}", note.getId());
 
         return ResponseEntity.created(null).body(noteCreateResponseDto);
     }
 
     @Override
     public ResponseEntity<List<NoteListResponseDto>> findList(Pageable pageable, Member principal) {
-        Member member = memberRepository.findById(principal.getId())
-                .orElseThrow(()->{
-                    throw new MemberException(MemberExceptionType.NOT_SIGNUP_EMAIL);
-                });
 
-        Page<Note> notePage = noteRepository.findByMemberId(pageable, member.getId());
+        Page<Note> findNotePage = noteRepository.findByMemberId(pageable, principal.getId());
 
         List<NoteListResponseDto> noteList = new ArrayList<>();
 
-        notePage.forEach(note -> {
+        findNotePage.forEach(note -> {
             noteList.add(new NoteListResponseDto(note));
         });
+
+        log.info("findList note");
 
         return ResponseEntity.ok(noteList);
     }
 
     @Override
-    public ResponseEntity<NoteDetailResponseDto> detail(NoteDetailRequestDto noteDetailRequestDto, Member principal) {
-        Note note = noteRepository.findById(noteDetailRequestDto.getId())
+    public ResponseEntity<NoteDetailResponseDto> detail(Long id, Member principal) {
+
+        Note findNote = findNote(id);
+
+        idMatching(findNote.getId(), principal.getId());
+
+        NoteDetailResponseDto noteDetailResponseDto = new NoteDetailResponseDto(findNote);
+
+        log.info("detail note ID : {}", findNote.getId());
+
+        return ResponseEntity.ok(noteDetailResponseDto);
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<Long> delete(NoteDeleteRequestDto noteDeleteRequestDto, Member principal) {
+
+        Note findNote = findNote(noteDeleteRequestDto.getId());
+
+        idMatching(findNote.getId(), principal.getId());
+
+        noteRepository.deleteById(findNote.getId());
+
+        log.info("delete note ID : {}", findNote.getId());
+
+        return ResponseEntity.ok(findNote.getId());
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<Long> update(NoteUpdateRequestDto noteUpdateRequestDto, Member principal) {
+
+        Note findNote = findNote(Long.parseLong(noteUpdateRequestDto.getId()));
+
+        Member findMember = findMember(principal.getId());
+
+        idMatching(findNote.getId(), findMember.getId());
+
+        findNote.update(noteUpdateRequestDto);
+
+        log.info("update note ID : {}", findNote.getId());
+
+        return ResponseEntity.ok(findNote.getId());
+
+    }
+
+    private void idMatching(Long noteId, Long memberId) {
+        if (!noteId.equals(memberId)) {
+            throw new NoteException(NoteExceptionType.NOT_MATCHING_NOTE);
+        }
+    }
+
+    private Note findNote(Long id) {
+        return noteRepository.findById(id)
                 .orElseThrow(()->{
                     throw new NoteException(NoteExceptionType.NOT_FOUND_NOTE);
                 });
+    }
 
-        if (note.getMember().getId() != principal.getId()) {
-            throw new NoteException(NoteExceptionType.NOT_MATCHING_NOTE);
-        }
-
-        NoteDetailResponseDto noteDetailResponseDto = new NoteDetailResponseDto(note);
-
-        return ResponseEntity.ok(noteDetailResponseDto);
+    private Member findMember(Long id) {
+        return memberRepository.findById(id)
+                .orElseThrow(()->{
+                    throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
+                });
     }
 }

@@ -2,7 +2,8 @@ package com.jwt.backend.domain.note.controller;
 
 import com.jwt.backend.domain.member.entity.Member;
 import com.jwt.backend.domain.note.dto.request.NoteCreateReqestDto;
-import com.jwt.backend.domain.note.dto.request.NoteDetailRequestDto;
+import com.jwt.backend.domain.note.dto.request.NoteDeleteRequestDto;
+import com.jwt.backend.domain.note.dto.request.NoteUpdateRequestDto;
 import com.jwt.backend.domain.note.dto.response.NoteCreateResponseDto;
 import com.jwt.backend.domain.note.dto.response.NoteDetailResponseDto;
 import com.jwt.backend.domain.note.dto.response.NoteListResponseDto;
@@ -36,9 +37,19 @@ public class NoteController {
         return noteService.findList(pageable, (Member) authentication.getPrincipal());
     }
 
-    @GetMapping("/detail")
-    public ResponseEntity<NoteDetailResponseDto> detail(@RequestBody NoteDetailRequestDto noteDetailRequestDto, Authentication authentication) {
-        return noteService.detail(noteDetailRequestDto, (Member) authentication.getPrincipal());
+    @GetMapping("/{id}")
+    public ResponseEntity<NoteDetailResponseDto> detail(@PathVariable("id") Long id, Authentication authentication) {
+        return noteService.detail(id, (Member) authentication.getPrincipal());
+    }
+
+    @DeleteMapping()
+    public ResponseEntity<Long> delete(@RequestBody @Valid NoteDeleteRequestDto noteDeleteRequestDto, Authentication authentication) {
+        return noteService.delete(noteDeleteRequestDto, (Member) authentication.getPrincipal());
+    }
+
+    @PutMapping()
+    public ResponseEntity<Long> update(@RequestBody @Valid NoteUpdateRequestDto noteUpdateRequestDto, Authentication authentication) {
+        return noteService.update(noteUpdateRequestDto, (Member) authentication.getPrincipal());
     }
 
 }
