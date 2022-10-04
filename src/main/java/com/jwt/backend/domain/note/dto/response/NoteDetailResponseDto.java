@@ -18,10 +18,12 @@ public class NoteDetailResponseDto {
     private String title;
     private String content;
     private LocalDateTime modifiedDate;
+    private String importance;
 
     public NoteDetailResponseDto(Note note) {
         this.title = note.getTitle();
         this.content = note.getContent();
         this.modifiedDate = note.getModifiedDate();
+        this.importance = note.getImportance();
     }
 }
