@@ -6,14 +6,12 @@ import com.jwt.backend.domain.todo.dto.request.TodoDeleteRequestDto;
 import com.jwt.backend.domain.todo.dto.response.TodoCreateResponseDto;
 import com.jwt.backend.domain.todo.dto.response.TodoListResponseDto;
 import com.jwt.backend.domain.todo.entity.Todo;
-import com.jwt.backend.domain.todo.exception.TodoException;
-import com.jwt.backend.domain.todo.exception.TodoExceptionType;
 import com.jwt.backend.domain.todo.repository.TodoRepository;
 import com.jwt.backend.domain.todo.service.TodoService;
 import com.jwt.backend.domain.member.entity.Member;
-import com.jwt.backend.domain.member.exception.MemberException;
-import com.jwt.backend.domain.member.exception.MemberExceptionType;
 import com.jwt.backend.domain.member.repository.MemberRepository;
+import com.jwt.backend.global.exception.CustomException;
+import com.jwt.backend.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -45,21 +43,18 @@ public class TodoServiceImpl implements TodoService {
     @Override
     @Transactional
     public ResponseEntity<TodoCreateResponseDto> create(TodoCreateRequestDto todoCreateRequestDto, Member principal) {
-        Todo todo = todoCreateRequestDto.toEntity();
-        Member member = memberRepository.findById(principal.getId())
-                .orElseThrow(()->{
-                    throw new MemberException(MemberExceptionType.NOT_SIGNUP_EMAIL);
-                });
 
-        todo.setMember(member);
+        Todo todo = new Todo(todoCreateRequestDto);
+
+        Member findMember = findMember(principal.getId());
+
+        todo.setMember(findMember);
 
         todoRepository.save(todo);
 
-        log.info("save todo ID : {} ",todo.getId());
+        TodoCreateResponseDto todoCreateResponseDto = new TodoCreateResponseDto(todo);
 
-        TodoCreateResponseDto todoCreateResponseDto = new TodoCreateResponseDto().builder()
-                .id(todo.getId())
-                .build();
+        log.info("save todo ID : {} ",todo.getId());
 
         return ResponseEntity
                 .created(null)
@@ -68,12 +63,10 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public ResponseEntity<List<TodoListResponseDto>> findList(Pageable pageable, Member principal) {
-        Member member = memberRepository.findById(principal.getId())
-                .orElseThrow(()->{
-                    throw new MemberException(MemberExceptionType.NOT_SIGNUP_EMAIL);
-                });
 
-        Page<Todo> todoPage = todoRepository.findByMemberId(pageable, member.getId());
+        Member findMember = findMember(principal.getId());
+
+        Page<Todo> todoPage = todoRepository.findByMemberId(pageable, findMember.getId());
 
         List<TodoListResponseDto> todoList = new ArrayList<>();
 
@@ -92,13 +85,9 @@ public class TodoServiceImpl implements TodoService {
 
         Todo findTodo = findTodo(todoDeleteRequestDto.getId());
 
-        Member findMember = memberRepository.findById(principal.getId())
-                .orElseThrow(()->{
-                    throw new MemberException(MemberExceptionType.NOT_SIGNUP_EMAIL);
-                });
+        Member findMember = findMember(principal.getId());
 
-        if (!findTodo.getMember().getId().equals(findMember.getId()))
-            throw new TodoException(TodoExceptionType.NOT_MATCHING_TODO);
+        todoMatchingMember(findMember, findTodo);
 
         todoRepository.delete(findTodo);
 
@@ -113,13 +102,9 @@ public class TodoServiceImpl implements TodoService {
 
         Todo findTodo = findTodo(todoCompletionRequestDto.getId());
 
-        Member findMember = memberRepository.findById(principal.getId())
-                .orElseThrow(()->{
-                    throw new MemberException(MemberExceptionType.NOT_SIGNUP_EMAIL);
-                });
+        Member findMember = findMember(principal.getId());
 
-        if (!findTodo.getMember().getId().equals(findMember.getId()))
-            throw new TodoException(TodoExceptionType.NOT_MATCHING_TODO);
+        todoMatchingMember(findMember, findTodo);
 
         findTodo.Check();
 
@@ -131,8 +116,20 @@ public class TodoServiceImpl implements TodoService {
     private Todo findTodo(Long id) {
         return todoRepository.findById(id)
                 .orElseThrow(()-> {
-                    throw new TodoException(TodoExceptionType.NOT_FOUND_TODO);
+                    throw new CustomException(ErrorCode.NOT_FOUND_TODO);
                 });
+    }
+
+    private Member findMember(Long id) {
+        return memberRepository.findById(id)
+                .orElseThrow(()->{
+                    throw new CustomException(ErrorCode.NOT_FOUND_MEMBER);
+                });
+    }
+
+    private void todoMatchingMember(Member member, Todo todo) {
+        if (!member.getId().equals(todo.getMember().getId()))
+            throw new CustomException(ErrorCode.NOT_MATCHING_TODO);
     }
 }
 

@@ -5,10 +5,10 @@ import com.jwt.backend.domain.member.entity.Member;
 import com.jwt.backend.domain.member.dto.request.MemberSignUpRequestDto;
 import com.jwt.backend.domain.member.dto.response.MemberLoginResponseDto;
 import com.jwt.backend.domain.member.dto.response.MemberSignUpResponseDto;
-import com.jwt.backend.domain.member.exception.MemberException;
-import com.jwt.backend.domain.member.exception.MemberExceptionType;
 import com.jwt.backend.domain.member.repository.MemberRepository;
 import com.jwt.backend.domain.member.service.MemberService;
+import com.jwt.backend.global.exception.CustomException;
+import com.jwt.backend.global.exception.ErrorCode;
 import com.jwt.backend.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,41 +39,48 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public ResponseEntity<MemberSignUpResponseDto> singUp(MemberSignUpRequestDto memberSignUpRequestDto) {
-        if (memberRepository.findByEmail(memberSignUpRequestDto.getEmail()).isPresent()) {
-            throw new MemberException(MemberExceptionType.ALREADY_EXIST_EMAIL);
-        }
 
-        Member member = memberRepository.save(memberSignUpRequestDto.toEntity());
+        validateMatchedEmail(memberSignUpRequestDto.getEmail());
 
-        member.addUserAuthority();
-        member.encodePassword(passwordEncoder);
+        Member member = new Member(memberSignUpRequestDto, passwordEncoder);
 
-        MemberSignUpResponseDto memberSignUpResponseDto = MemberSignUpResponseDto.builder()
-                .id(member.getId())
-                .build();
+        memberRepository.save(member);
+
+        MemberSignUpResponseDto memberSignUpResponseDto = new MemberSignUpResponseDto(member.getId());
 
         return ResponseEntity.created(null).body(memberSignUpResponseDto);
     }
 
     @Override
     public ResponseEntity<MemberLoginResponseDto> login(MemberLoginRequestDto memberLoginRequestDto) {
-        Member member = memberRepository.findByEmail(memberLoginRequestDto.getEmail())
-                .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_SIGNUP_EMAIL));
-        validateMatchedPassword(memberLoginRequestDto.getPassword(), member.getPassword());
 
-        String accessToken = jwtTokenProvider.createAccessToken(member.getUsername(), member.getRole().name());
+        Member findMember = findMember(memberLoginRequestDto.getEmail());
 
-        MemberLoginResponseDto memberLoginResponseDto = new MemberLoginResponseDto().builder()
-                .nickname(member.getNickname())
-                .token(accessToken)
-                .build();
+        validateMatchedPassword(memberLoginRequestDto.getPassword(), findMember.getPassword());
+
+        String accessToken = jwtTokenProvider.createAccessToken(findMember.getUsername(), findMember.getRole().name());
+
+        MemberLoginResponseDto memberLoginResponseDto = new MemberLoginResponseDto(findMember, accessToken);
 
         return ResponseEntity.ok(memberLoginResponseDto);
     }
 
+    private void validateMatchedEmail(String email) {
+        if (memberRepository.findByEmail(email).isPresent()) {
+            throw new CustomException(ErrorCode.EXIST_MEMBER);
+        }
+    }
+
     private void validateMatchedPassword(String validPassword, String memberPassword) {
         if (!passwordEncoder.matches(validPassword, memberPassword)) {
-            throw new MemberException(MemberExceptionType.WRONG_PASSWORD);
+            throw new CustomException(ErrorCode.NOT_FOUND_PASSWORD);
         }
+    }
+
+    private Member findMember(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(()->{
+                    throw new CustomException(ErrorCode.NOT_FOUND_MEMBER);
+                });
     }
 }

@@ -1,8 +1,6 @@
 package com.jwt.backend.domain.note.service.impl;
 
 import com.jwt.backend.domain.member.entity.Member;
-import com.jwt.backend.domain.member.exception.MemberException;
-import com.jwt.backend.domain.member.exception.MemberExceptionType;
 import com.jwt.backend.domain.member.repository.MemberRepository;
 import com.jwt.backend.domain.note.dto.request.NoteCreateReqestDto;
 import com.jwt.backend.domain.note.dto.request.NoteDeleteRequestDto;
@@ -11,10 +9,10 @@ import com.jwt.backend.domain.note.dto.response.NoteCreateResponseDto;
 import com.jwt.backend.domain.note.dto.response.NoteDetailResponseDto;
 import com.jwt.backend.domain.note.dto.response.NoteListResponseDto;
 import com.jwt.backend.domain.note.entity.Note;
-import com.jwt.backend.domain.note.exception.NoteException;
-import com.jwt.backend.domain.note.exception.NoteExceptionType;
 import com.jwt.backend.domain.note.repository.NoteRepository;
 import com.jwt.backend.domain.note.service.NoteService;
+import com.jwt.backend.global.exception.CustomException;
+import com.jwt.backend.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -75,7 +73,7 @@ public class NoteServiceImpl implements NoteService {
 
         Note findNote = findNote(id);
 
-        idMatching(findNote.getId(), principal.getId());
+        idMatching(principal, findNote);
 
         NoteDetailResponseDto noteDetailResponseDto = new NoteDetailResponseDto(findNote);
 
@@ -90,7 +88,7 @@ public class NoteServiceImpl implements NoteService {
 
         Note findNote = findNote(noteDeleteRequestDto.getId());
 
-        idMatching(findNote.getId(), principal.getId());
+        idMatching(principal, findNote);
 
         noteRepository.deleteById(findNote.getId());
 
@@ -107,7 +105,7 @@ public class NoteServiceImpl implements NoteService {
 
         Member findMember = findMember(principal.getId());
 
-        idMatching(findNote.getId(), findMember.getId());
+        idMatching(findMember, findNote);
 
         findNote.update(noteUpdateRequestDto);
 
@@ -117,23 +115,23 @@ public class NoteServiceImpl implements NoteService {
 
     }
 
-    private void idMatching(Long noteId, Long memberId) {
-        if (!noteId.equals(memberId)) {
-            throw new NoteException(NoteExceptionType.NOT_MATCHING_NOTE);
+    private void idMatching(Member member, Note note) {
+        if (!member.getId().equals(note.getMember().getId())) {
+            throw new CustomException(ErrorCode.NOT_MATCHING_NOTE);
         }
     }
 
     private Note findNote(Long id) {
         return noteRepository.findById(id)
                 .orElseThrow(()->{
-                    throw new NoteException(NoteExceptionType.NOT_FOUND_NOTE);
+                    throw new CustomException(ErrorCode.NOT_FOUND_NOTE);
                 });
     }
 
     private Member findMember(Long id) {
         return memberRepository.findById(id)
                 .orElseThrow(()->{
-                    throw new MemberException(MemberExceptionType.NOT_FOUND_MEMBER);
+                    throw new CustomException(ErrorCode.NOT_FOUND_MEMBER);
                 });
     }
 }

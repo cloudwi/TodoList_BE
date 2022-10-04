@@ -1,5 +1,6 @@
 package com.jwt.backend.domain.todo.entity;
 
+import com.jwt.backend.domain.todo.dto.request.TodoCreateRequestDto;
 import com.jwt.backend.domain.todo.dto.response.TodoListResponseDto;
 import com.jwt.backend.domain.member.entity.Member;
 import lombok.AllArgsConstructor;
@@ -33,6 +34,10 @@ public class Todo {
 
     @Column(nullable = false)
     private boolean checkTodo = false;
+
+    public Todo(TodoCreateRequestDto todoCreateRequestDto) {
+        this.content = todoCreateRequestDto.getContent();
+    }
 
     public void Check() {
         this.checkTodo = !this.checkTodo;

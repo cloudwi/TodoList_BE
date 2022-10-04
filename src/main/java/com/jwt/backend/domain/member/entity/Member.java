@@ -1,5 +1,6 @@
 package com.jwt.backend.domain.member.entity;
 
+import com.jwt.backend.domain.member.dto.request.MemberSignUpRequestDto;
 import com.jwt.backend.domain.todo.entity.Todo;
 import com.jwt.backend.domain.note.entity.Note;
 import lombok.AllArgsConstructor;
@@ -52,7 +53,7 @@ public class Member implements UserDetails {
     private String refreshToken;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role role = Role.ROLE_USER;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Todo> todoList = new ArrayList<>();
@@ -60,12 +61,10 @@ public class Member implements UserDetails {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Note> noteList = new ArrayList<>();
 
-    public void addUserAuthority() {
-        this.role = Role.ROLE_USER;
-    }
-
-    public void encodePassword(PasswordEncoder passwordEncoder) {
-        this.password = passwordEncoder.encode(password);
+    public Member(MemberSignUpRequestDto memberSignUpRequestDto, PasswordEncoder passwordEncoder) {
+        this.email = memberSignUpRequestDto.getEmail();
+        this.password = passwordEncoder.encode(memberSignUpRequestDto.getPassword());
+        this.nickname = memberSignUpRequestDto.getNickname();
     }
 
     public void addTodo(Todo todo) {
