@@ -59,9 +59,7 @@ public class NoteServiceImpl implements NoteService {
 
         List<NoteListResponseDto> noteList = new ArrayList<>();
 
-        findNotePage.forEach(note -> {
-            noteList.add(new NoteListResponseDto(note));
-        });
+        findNotePage.forEach(note -> noteList.add(new NoteListResponseDto(note)));
 
         log.info("findList note");
 
@@ -117,21 +115,21 @@ public class NoteServiceImpl implements NoteService {
 
     private void idMatching(Member member, Note note) {
         if (!member.getId().equals(note.getMember().getId())) {
-            throw new CustomException(ErrorCode.NOT_MATCHING_NOTE);
+            throw new CustomException(ErrorCode.NOTE_NOT_FOUND);
         }
     }
 
     private Note findNote(Long id) {
         return noteRepository.findById(id)
                 .orElseThrow(()->{
-                    throw new CustomException(ErrorCode.NOT_FOUND_NOTE);
+                    throw new CustomException(ErrorCode.NOTE_NOT_FOUND);
                 });
     }
 
     private Member findMember(Long id) {
         return memberRepository.findById(id)
                 .orElseThrow(()->{
-                    throw new CustomException(ErrorCode.NOT_FOUND_MEMBER);
+                    throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
                 });
     }
 }

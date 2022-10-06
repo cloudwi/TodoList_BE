@@ -63,7 +63,7 @@ public class JwtTokenProvider {
         return request.getHeader("X-AUTH-TOKEN");
     }
 
-    public boolean validateToken(String jwtToken) {
+    public boolean validateAccessToken(String jwtToken) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());

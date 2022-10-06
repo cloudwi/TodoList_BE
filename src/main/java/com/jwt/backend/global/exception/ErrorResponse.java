@@ -12,25 +12,35 @@ import java.time.LocalDateTime;
 public class ErrorResponse {
 
     private final LocalDateTime timestamp = LocalDateTime.now();
-    private final int status;
+    private final Integer status;
     private final String error;
     private final String code;
-    private final String detail;
     private final String message;
 
-    public static ResponseEntity<Object> toResponseEntity(CustomException e) {
-        ErrorCode errorCode = e.getErrorCode();
+    public static ResponseEntity<ErrorResponse> toResponseEntity(ErrorCode errorCode) {
 
         return ResponseEntity
                 .status(errorCode.getHttpStatus())
                 .body(
                         ErrorResponse.builder()
-                                .status(errorCode.getHttpStatus().value())//httpStatus 코드
-                                .error(errorCode.getHttpStatus().name())//httpStatus 이름
-                                .code(errorCode.name())//errorCode 의 이름
-                                .detail(errorCode.getDetail())//errorCode 상세
-                                .message(e.getMessage())//에러 메시지
-                                .build()
-                );
+                        .status(errorCode.getHttpStatus().value())
+                        .error(errorCode.getHttpStatus().name())
+                        .code(errorCode.name())
+                        .message(errorCode.getMessage())
+                        .build());
+    }
+
+    public static ResponseEntity<Object> toObject(CustomException customException) {
+        ErrorCode errorCode = customException.getErrorCode();
+
+        return ResponseEntity
+                .status(errorCode.getHttpStatus())
+                .body(
+                        ErrorResponse.builder()
+                                .status(errorCode.getHttpStatus().value())
+                                .error(errorCode.getHttpStatus().name())
+                                .code(errorCode.name())
+                                .message(customException.getMessage())
+                                .build());
     }
 }

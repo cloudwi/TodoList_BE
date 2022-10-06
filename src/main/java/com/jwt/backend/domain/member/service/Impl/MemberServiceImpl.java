@@ -67,20 +67,20 @@ public class MemberServiceImpl implements MemberService {
 
     private void validateMatchedEmail(String email) {
         if (memberRepository.findByEmail(email).isPresent()) {
-            throw new CustomException(ErrorCode.EXIST_MEMBER);
+            throw new CustomException(ErrorCode.EMAIL_DUPLICATE);
         }
     }
 
     private void validateMatchedPassword(String validPassword, String memberPassword) {
         if (!passwordEncoder.matches(validPassword, memberPassword)) {
-            throw new CustomException(ErrorCode.NOT_FOUND_PASSWORD);
+            throw new CustomException(ErrorCode.PASSWORD_DIFFERENT);
         }
     }
 
     private Member findMember(String email) {
         return memberRepository.findByEmail(email)
                 .orElseThrow(()->{
-                    throw new CustomException(ErrorCode.NOT_FOUND_MEMBER);
+                    throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
                 });
     }
 }

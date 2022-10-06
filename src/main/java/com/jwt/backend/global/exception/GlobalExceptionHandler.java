@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -15,30 +14,18 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    //일반 에러
-    @ExceptionHandler
-    protected ResponseEntity<Object> handleCustomException(CustomException e) {
-        return ErrorResponse.toResponseEntity(e);
+    @ExceptionHandler(CustomException.class)
+    protected ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
+        return ErrorResponse.toResponseEntity(e.getErrorCode());
     }
 
-    //요청 바디 검증 실패
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers,
                                                                   HttpStatus status,
                                                                   WebRequest request) {
-        CustomException e = new CustomException(ErrorCode.BAD_REQUEST_VALIDATION, ex.getMessage());
-
-        return ErrorResponse.toResponseEntity(e);
+        CustomException e = new CustomException(ErrorCode.BAD_REQUEST_VALIDATION, ex.getFieldError().getDefaultMessage());
+        return ErrorResponse.toObject(e);
     }
 
-    //모델 검증 실패
-    @Override
-    protected ResponseEntity<Object> handleBindException(BindException ex,
-                                                         HttpHeaders headers,
-                                                         HttpStatus status,
-                                                         WebRequest request) {
-        CustomException e = new CustomException(ErrorCode.BAD_REQUEST_VALIDATION, ex.getMessage());
-        return ErrorResponse.toResponseEntity(e);
-    }
 }

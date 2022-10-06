@@ -1,6 +1,8 @@
 package com.jwt.backend.domain.member.service;
 
 import com.jwt.backend.domain.member.repository.MemberRepository;
+import com.jwt.backend.global.exception.CustomException;
+import com.jwt.backend.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +21,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return memberRepository.findByEmail(email)
                 .orElseThrow(() ->
-                        new UsernameNotFoundException("로그인 아디가 존재하지 않습니다."));
+                {
+                    throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
+                });
     }
 }

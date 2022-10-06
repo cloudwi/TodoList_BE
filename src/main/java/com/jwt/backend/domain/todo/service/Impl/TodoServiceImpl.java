@@ -70,9 +70,7 @@ public class TodoServiceImpl implements TodoService {
 
         List<TodoListResponseDto> todoList = new ArrayList<>();
 
-        todoPage.forEach(todo -> {
-            todoList.add(new TodoListResponseDto(todo));
-        });
+        todoPage.forEach(todo -> todoList.add(new TodoListResponseDto(todo)));
 
         log.info("find todoList");
 
@@ -116,20 +114,20 @@ public class TodoServiceImpl implements TodoService {
     private Todo findTodo(Long id) {
         return todoRepository.findById(id)
                 .orElseThrow(()-> {
-                    throw new CustomException(ErrorCode.NOT_FOUND_TODO);
+                    throw new CustomException(ErrorCode.TODO_NOT_FOUND);
                 });
     }
 
     private Member findMember(Long id) {
         return memberRepository.findById(id)
                 .orElseThrow(()->{
-                    throw new CustomException(ErrorCode.NOT_FOUND_MEMBER);
+                    throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
                 });
     }
 
     private void todoMatchingMember(Member member, Todo todo) {
         if (!member.getId().equals(todo.getMember().getId()))
-            throw new CustomException(ErrorCode.NOT_MATCHING_TODO);
+            throw new CustomException(ErrorCode.TODO_NOT_FOUND);
     }
 }
 
