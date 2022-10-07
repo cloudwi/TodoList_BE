@@ -61,8 +61,8 @@ public class SecurityConfig {
                 .antMatchers("/favicon.ico")
                 .antMatchers("/pages/**")
                 .antMatchers("/h2-console/**")
-                .antMatchers("/swagger-ui/**")
-                .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**");
+                .antMatchers("/swagger-ui-custom.html/**")
+                .antMatchers("/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**");
     }
 
     public CorsConfigurationSource corsConfigurationSource() {
