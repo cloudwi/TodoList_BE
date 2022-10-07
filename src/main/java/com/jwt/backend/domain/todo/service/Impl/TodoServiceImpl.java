@@ -111,6 +111,15 @@ public class TodoServiceImpl implements TodoService {
         return ResponseEntity.ok(findTodo.getId());
     }
 
+    @Override
+    public ResponseEntity<Long> count(Member principal) {
+        Long count = todoRepository.countByMemberId(principal.getId());
+
+        log.info("count todo Member Id : {}", principal.getId());
+
+        return ResponseEntity.ok(count);
+    }
+
     private Todo findTodo(Long id) {
         return todoRepository.findById(id)
                 .orElseThrow(()-> {

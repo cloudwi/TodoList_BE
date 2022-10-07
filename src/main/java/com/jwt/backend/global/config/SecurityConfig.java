@@ -1,4 +1,4 @@
-package com.jwt.backend.global.security.config;
+package com.jwt.backend.global.config;
 
 import com.jwt.backend.global.security.jwt.JwtTokenProvider;
 import com.jwt.backend.global.security.jwt.filter.JwtAuthenticationFilter;
@@ -39,8 +39,8 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .antMatchers("/member").permitAll()
-                .antMatchers("/member/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/member").permitAll()
+                .antMatchers(HttpMethod.POST,"/member/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
@@ -52,11 +52,6 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
                 //.antMatchers(HttpMethod.GET ,"/**")
-                .antMatchers(HttpMethod.GET, "/api/projects/**")
-                .antMatchers(HttpMethod.GET, "/api/files/**")
-                .antMatchers(HttpMethod.GET, "/api/stack/**")
-                .antMatchers(HttpMethod.GET, "/api/comments/**")
-                .antMatchers(HttpMethod.POST, "/api/members")
                 .antMatchers("/css/**")
                 .antMatchers("/static/**")
                 .antMatchers("/js/**")
@@ -74,7 +69,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         // 허용할 origin (fe 로컬용 호스트, 리얼용 호스트)
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://todolist-b3d69.web.app"));
 
         // 허용할 HTTP Method 종류
         configuration.setAllowedHeaders(Arrays.asList("GET", "POST", "PUT", "DELETE"));
@@ -83,7 +78,7 @@ public class SecurityConfig {
         configuration.addAllowedHeader("*");
 
         // 노출시킬 헤더
-        configuration.addExposedHeader("Authorization");
+        configuration.addExposedHeader("X-AUTH-TOKEN");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

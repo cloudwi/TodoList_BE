@@ -7,6 +7,13 @@ spring:
       production:
         - prod
 
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: swagger-ui-custom.html
+    operations-sorter: method
+
 ---
 
 spring:

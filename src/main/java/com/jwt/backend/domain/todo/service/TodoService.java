@@ -21,4 +21,6 @@ public interface TodoService {
     ResponseEntity<Long> delete(TodoDeleteRequestDto todoDeleteRequestDto, Member principal);
 
     ResponseEntity<Long> check(TodoCompletionRequestDto todoCompletionRequestDto, Member principal);
+
+    ResponseEntity<Long> count(Member principal);
 }

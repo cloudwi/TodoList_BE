@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface TodoRepository extends JpaRepository<Todo, Long> {
 
     Page<Todo> findByMemberId(Pageable pageable, Long id);
+
+    Long countByMemberId(Long id);
 }

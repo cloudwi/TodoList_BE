@@ -48,4 +48,9 @@ public class TodoController {
                                            Authentication authentication) {
         return todoService.check(todoCompletionRequestDto, (Member) authentication.getPrincipal());
     }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> count(Authentication authentication) {
+        return todoService.count((Member) authentication.getPrincipal());
+    }
 }

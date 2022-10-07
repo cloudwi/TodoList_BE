@@ -1,4 +1,4 @@
-package com.jwt.backend.global.security.config;
+package com.jwt.backend.global.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;

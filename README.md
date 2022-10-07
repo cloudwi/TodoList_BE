@@ -1,6 +1,6 @@
 # TodoList_BE <br><br> TodoList Project
 
-## 로컬 빌드 환경
+## 빌드 환경
     git clone https://github.com/cloudwi/record-the-day-backend-.git
 - IDE 환경 (인텔리제이)
   - IDE open : record-the-day-backend-
