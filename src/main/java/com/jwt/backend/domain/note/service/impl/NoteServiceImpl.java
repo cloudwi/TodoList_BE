@@ -113,6 +113,14 @@ public class NoteServiceImpl implements NoteService {
 
     }
 
+    @Override
+    public ResponseEntity<Long> count(Member principal) {
+
+        Long count = noteRepository.countByMemberId(principal.getId());
+
+        return ResponseEntity.ok(count);
+    }
+
     private void idMatching(Member member, Note note) {
         if (!member.getId().equals(note.getMember().getId())) {
             throw new CustomException(ErrorCode.NOTE_NOT_FOUND);

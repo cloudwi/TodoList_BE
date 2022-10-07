@@ -52,4 +52,9 @@ public class NoteController {
         return noteService.update(noteUpdateRequestDto, (Member) authentication.getPrincipal());
     }
 
+    @GetMapping("/count")
+    public ResponseEntity<Long> count(Authentication authentication) {
+        return noteService.count((Member) authentication.getPrincipal());
+    }
+
 }

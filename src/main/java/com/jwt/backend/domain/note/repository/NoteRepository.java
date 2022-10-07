@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface NoteRepository extends JpaRepository<Note, Long> {
     Page<Note> findByMemberId(Pageable pageable, Long id);
+
+    Long countByMemberId(Long id);
 }

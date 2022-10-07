@@ -25,4 +25,5 @@ public interface NoteService {
 
     ResponseEntity<Long> update(NoteUpdateRequestDto noteUpdateRequestDto, Member principal);
 
+    ResponseEntity<Long> count(Member principal);
 }
