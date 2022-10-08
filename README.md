@@ -1,4 +1,4 @@
-# TodoList_BE <br><br> TodoList Project
+# Record-The-Day-Backend- <br><br> Record-The-Day Project
 
 ## 빌드 환경
     git clone https://github.com/cloudwi/record-the-day-backend-.git
@@ -11,9 +11,16 @@
   - [window] : `./gradlew.bat build`
   - `java -jar hello-spring-0.0.1-SNAPSHOT.jar`
 
+<br>
 
+## api-docs
 
-## 🛠️ 개발 환경
+[Swagger](https://cloudwi.herokuapp.com/swagger-ui)
+- Explore : `/api-docs` 
+
+<br>
+
+## 개발 환경
 
 <p>
     <img src="https://img.shields.io/badge/javascript-F7DF1E?style=flat-square&logo=javascript&logoColor=white"/>
@@ -39,12 +46,12 @@
 
 <br>
 
-## 💡 Backend 배포 주소 [record-the-day-backend-](https://cloudwi.herokuapp.com/)
-## 💡 Frontend 배포 주소 [record-the-day-frontend-](https://todolist-b3d69.web.app/)
+## Backend 배포 주소 [record-the-day-backend-](https://cloudwi.herokuapp.com/)
+## Frontend 배포 주소 [record-the-day-frontend-](https://todolist-b3d69.web.app/)
 
 <br>
 
-## 🗝️ 주요 기능
+## 주요 기능
 
 - JWT 자체 로그인 기능
 - 회원가입, 로그인, 로그아웃
@@ -53,7 +60,7 @@
 
 <br>
 
-## ✅ 주요 개발
+## 주요 개발
 
 - 로그인 및 회원가입 ( JWT token 인증 방식 )
 - Member, Todo, Note 연관관계 테이블 정의 CRUD 기능 탑재
@@ -61,10 +68,11 @@
 - 커스텀 에러 타입 바탕으로 사용자 친화적으로 메시지 전달
 - validation 사용하여 요청 객체 검증과 에러 발생시 에러 메시지 전달
 - github action, Heroku, firebase 활용 배포 자동화
+- swagger api-docs 확인
 
 <br>
 
-## 👬 팀원 소개
+## 팀원
 
 FRONT-END : [차지민 gitLink](https://github.com/d-o0o-b11)
 
