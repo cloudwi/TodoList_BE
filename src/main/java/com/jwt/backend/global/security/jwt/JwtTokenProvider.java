@@ -1,10 +1,7 @@
 package com.jwt.backend.global.security.jwt;
 
 import com.jwt.backend.domain.member.service.CustomUserDetailsService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,12 +21,10 @@ public class JwtTokenProvider {
     @Value("spring.jwt.secret")
     private String secretKey;
 
-    private Long ACCESS_TOKEN_VALID_TIME = 1000L * 60 * 30; //30분
+    private final Long ACCESS_TOKEN_VALID_TIME = 1000L * 60 * 30; //30분
 
-    private Long REFRESH_TOKEN_VALID_TIME = 1000L * 60 * 60 * 24 * 7; //일주일
+//    private Long REFRESH_TOKEN_VALID_TIME = 1000L * 60 * 60 * 24 * 7; //일주일
     private final CustomUserDetailsService customUserDetailsService;
-    public static final String HEADER_ACCESS_TOKEN = "X-ACCESS-TOKEN";
-    public static final String HEADER_REFRESH_TOKEN = "X-REFRESH-TOKEN";
 
     @PostConstruct
     protected void init() {
@@ -42,33 +37,43 @@ public class JwtTokenProvider {
         Date now = new Date();
 
         return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_VALID_TIME))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .setHeaderParam(Header.TYPE, Header.JWT_TYPE) // JWT 타입 지정 bearer
+                .setClaims(claims) // 내용
+                .setIssuedAt(now) // 발급시간
+                .setIssuer("cloudwi")
+                .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_VALID_TIME)) // 만료시간
+                .setSubject(email)
+                .signWith(SignatureAlgorithm.HS256, secretKey) // 알고리즘, 시크릿 키
                 .compact();
     }
 
     //토큰에서 인증정보를 조회하는 메서드
     public Authentication getAuthentication(String token) {
+        token = BearerRemove(token);
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(getUserEmail(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     public String getUserEmail(String token) {
+        token = BearerRemove(token);
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("X-AUTH-TOKEN");
+        return request.getHeader("AccessToken");
     }
 
-    public boolean validateAccessToken(String jwtToken) {
+    public boolean validateAccessToken(String token) {
+        token = BearerRemove(token);
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
             return false;
         }
+    }
+
+    private String BearerRemove(String token) {
+        return token.substring("Bearer ".length());
     }
 }

@@ -14,6 +14,6 @@ public class MemberLoginResponseDto {
 
     public MemberLoginResponseDto(Member member, String accessToken) {
         this.nickname = member.getNickname();
-        this.token = accessToken;
+        this.token = "bearer " + accessToken;
     }
 }
