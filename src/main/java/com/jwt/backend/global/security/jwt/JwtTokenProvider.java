@@ -1,6 +1,8 @@
 package com.jwt.backend.global.security.jwt;
 
 import com.jwt.backend.domain.member.service.CustomUserDetailsService;
+import com.jwt.backend.global.exception.CustomException;
+import com.jwt.backend.global.exception.ErrorCode;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,7 +51,6 @@ public class JwtTokenProvider {
 
     //토큰에서 인증정보를 조회하는 메서드
     public Authentication getAuthentication(String token) {
-        token = BearerRemove(token);
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(getUserEmail(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
@@ -63,7 +64,7 @@ public class JwtTokenProvider {
     }
 
     public boolean validateAccessToken(String token) {
-        token = BearerRemove(token);
+        token = bearerRemove(token);
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date());
@@ -72,7 +73,7 @@ public class JwtTokenProvider {
         }
     }
 
-    private String BearerRemove(String token) {
+    public String bearerRemove(String token) {
         return token.substring("Bearer ".length());
     }
 }
