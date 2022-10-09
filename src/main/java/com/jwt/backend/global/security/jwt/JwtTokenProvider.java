@@ -55,7 +55,6 @@ public class JwtTokenProvider {
     }
 
     public String getUserEmail(String token) {
-        token = BearerRemove(token);
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
