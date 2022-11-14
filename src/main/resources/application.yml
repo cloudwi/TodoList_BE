@@ -72,9 +72,7 @@ spring:
   datasource:
     #heroku에 설정 값들을 반영하는 것 아래에서 설명 드림
     #Qoddi로 이전
-    url: ${POSTGRES_DB}
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
+    url: ${JDBC_DATABASE_URL}
     driver-class-name: org.postgresql.Driver
 
   jpa:
