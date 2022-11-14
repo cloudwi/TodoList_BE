@@ -72,10 +72,10 @@ spring:
   datasource:
     #heroku에 설정 값들을 반영하는 것 아래에서 설명 드림
     #Qoddi로 이전
-    url: ${JDBC_DATABASE_URL}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://srv-captain--kzepnbmlhv-postgresql-14x:5432/record-the-day-backend-database
     driver-class-name: org.postgresql.Driver
+    username: record-the-day-backend-user
+    password: 2IXGYh1a9pFmULlq
 
   jpa:
     properties:
@@ -88,7 +88,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     #db에 내용이 수정된게 있으면 반영한다.
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
 
 logging:
   level:
@@ -96,10 +96,10 @@ logging:
     org.springframework.web: debug
 
 server:
-  port: ${PORT}
+  port: 8080
 
   security:
     jwt:
       header: Authorization
-      secret: ${SECRET_KEY}
+      secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
       token-validity-in-seconds: 86400
