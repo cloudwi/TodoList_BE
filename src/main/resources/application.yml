@@ -7,10 +7,6 @@ spring:
       production:
         - prod
 
-  batch:
-    job:
-      enabled: false
-      
 springdoc:
   api-docs:
     path: /api-docs
@@ -35,7 +31,6 @@ spring:
     url: jdbc:h2:mem:test
     username: sa
     password:
-
   h2:
     console:
       enabled: true

@@ -38,6 +38,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                .antMatchers("/*").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/member").permitAll()
                 .antMatchers(HttpMethod.POST,"/member/login").permitAll()
@@ -51,6 +52,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
+                .antMatchers("/test")
                 //.antMatchers(HttpMethod.GET ,"/**")
                 .antMatchers("/css/**")
                 .antMatchers("/static/**")
