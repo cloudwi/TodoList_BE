@@ -34,26 +34,22 @@ public class NoteController {
     public ResponseEntity<NoteCreateResponseDto> create(@RequestBody @Valid NoteCreateReqestDto noteCreateReqestDto, Authentication authentication) {
         return noteService.create(noteCreateReqestDto, (Member) authentication.getPrincipal());
     }
-
     @Operation(summary = "해당 회원이 작성한 NoteList 조회 하기")
     @GetMapping()
     public ResponseEntity<List<NoteListResponseDto>> findList(@PageableDefault(value = 9, sort = "id",
             direction = Sort.Direction.DESC) Pageable pageable, Authentication authentication) {
         return noteService.findList(pageable, (Member) authentication.getPrincipal());
     }
-
     @Operation(summary = "해당 회원이 작성한 Note 상세 조회 하기")
     @GetMapping("/{id}")
     public ResponseEntity<NoteDetailResponseDto> detail(@PathVariable("id") Long id, Authentication authentication) {
         return noteService.detail(id, (Member) authentication.getPrincipal());
     }
-
     @Operation(summary = "해당 회원이 작성한 Note 삭제 하기")
     @DeleteMapping()
     public ResponseEntity<Long> delete(@RequestBody @Valid NoteDeleteRequestDto noteDeleteRequestDto, Authentication authentication) {
         return noteService.delete(noteDeleteRequestDto, (Member) authentication.getPrincipal());
     }
-
     @Operation(summary = "해당 회원이 작성한 Note 수정 하기")
     @PutMapping()
     public ResponseEntity<Long> update(@RequestBody @Valid NoteUpdateRequestDto noteUpdateRequestDto, Authentication authentication) {

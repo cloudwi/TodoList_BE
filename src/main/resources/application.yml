@@ -7,6 +7,10 @@ spring:
       production:
         - prod
 
+  batch:
+    job:
+      enabled: false
+      
 springdoc:
   api-docs:
     path: /api-docs
@@ -67,9 +71,10 @@ spring:
 
   datasource:
     #heroku에 설정 값들을 반영하는 것 아래에서 설명 드림
-    url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    #Qoddi로 이전
+    url: ${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
