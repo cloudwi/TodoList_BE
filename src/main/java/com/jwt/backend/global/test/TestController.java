@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping()
+@RequestMapping("/test")
 public class TestController {
 
     @Operation(summary = "토큰의 테스트를 위해서 사용한다.")
-    @GetMapping("/test")
+    @GetMapping()
     public ResponseEntity<String> test() {
         return ResponseEntity.ok().body("test");
     }
