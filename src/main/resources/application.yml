@@ -58,7 +58,6 @@ logging:
 
 ---
 
-
 spring:
   config:
     activate:
