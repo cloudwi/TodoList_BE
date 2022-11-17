@@ -52,7 +52,7 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
                 .antMatchers(HttpMethod.GET,"/test")
-                .antMatchers(HttpMethod.GET ,"/**")
+//                .antMatchers(HttpMethod.GET ,"/**")
                 .antMatchers("/css/**")
                 .antMatchers("/static/**")
                 .antMatchers("/js/**")
