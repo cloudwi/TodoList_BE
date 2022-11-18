@@ -53,6 +53,7 @@ public class SecurityConfig {
         return (web) -> web.ignoring()
                 .antMatchers(HttpMethod.GET,"/test")
 //                .antMatchers(HttpMethod.GET ,"/**")
+                .antMatchers("/scripts/**")
                 .antMatchers("/css/**")
                 .antMatchers("/static/**")
                 .antMatchers("/js/**")
