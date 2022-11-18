@@ -1,1 +1,1 @@
-web: java -jar -Dserver.port=$PORT $JAVA_OPTS -Dspring.profiles.active=prod -jar build/libs/backend-0.0.1-SNAPSHOT.jar
+web: ./scripts/run-qoddi.sh
