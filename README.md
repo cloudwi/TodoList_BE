@@ -14,9 +14,11 @@
 <br>
 
 ## api-docs
+링크로 접속하여 /api-docs 입력
 
 [Swagger](https://cloudwi.herokuapp.com/swagger-ui)
 - Explore : `/api-docs` 
+<img width="944" alt="스크린샷 2023-02-09 14 49 36" src="https://user-images.githubusercontent.com/86584887/217729294-02cbe360-1aaa-4239-be9c-6993bef6a395.png">
 
 <br>
 
