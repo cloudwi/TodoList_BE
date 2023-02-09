@@ -3,8 +3,6 @@
 ## 프로젝트 기획의도
 > '하루를 기록하다'는 대학생 때 강의내용을 메모장 또는 카카오톡에 기록을 해두고 필요할 때마다 찾아서 보았습니다. 기록한 자료들이 섞여 있어서 찾는 시간이 오래걸리는 단점이 있었습니다. 그래서 이 프로젝트를 만듦으로써 오늘 할 일 , 중요도에 따른 노트를 기록할 수 있는 기능을 구현하고자 아이디어를 생각했습니다.
 
-
-
 ## 빌드 환경
     git clone https://github.com/cloudwi/record-the-day-backend-.git
 - IDE 환경 (인텔리제이)
@@ -21,7 +19,7 @@
 ## api-docs
 링크로 접속하여 /api-docs 입력
 
-[Swagger](https://cloudwi.herokuapp.com/swagger-ui)
+[Swagger](https://thuxzloyfg.us15.qoddiapp.com/swagger-ui)
 - Explore : `/api-docs` 
 <img width="944" alt="스크린샷 2023-02-09 14 49 36" src="https://user-images.githubusercontent.com/86584887/217729294-02cbe360-1aaa-4239-be9c-6993bef6a395.png" />
 
